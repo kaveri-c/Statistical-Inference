@@ -1,0 +1,131 @@
+---
+title: "Statistical Inference"
+author: "Kaveri Chatra"
+output:
+  html_document: default
+  pdf_document: default
+--- 
+
+## Part 1: Investigating exponetial distribution and comparing with Central Limit Theorem
+
+### Loading Libraries
+
+```{r}
+library("data.table")
+library("ggplot2")
+library("datasets")
+library("rcompanion")
+```
+
+```{r, echo=TRUE}
+
+set.seed(1)
+lambda <- 0.2
+sim<- 1000
+n <- 40
+
+
+exp_sim <- replicate(sim, rexp(n, lambda))
+means_exp <- apply(exp_sim, 2, mean)
+```
+
+### 1. Show where the distribution is centered at and compare it to the theoretical center of the distribution.
+
+```{r, echo=TRUE}
+sample_mean <- mean(exp_sim)
+theoretical_mean <-1/lambda
+hist(means_exp, xlab = "sample means", main = "Exponential Function")
+abline(v = theoretical_mean, col = "orange", lwd = 4)
+abline(v = sample_mean, col = "black")
+```
+From the graph it can be noticed that sample mean is very close to theoretical mean
+
+### 2. Show how variable it is and compare it to the theoretical variance of the distribution.. 
+Standard deviation
+```{r, echo=TRUE}
+
+sample_std <- sd(means_exp)
+#For exp. distribution mean = std
+theoretical_std <- 1/lambda/sqrt(n)
+theoretical_std
+sample_std
+```
+Variance
+```{r, echo=TRUE}
+sample_var <- var(means_exp)
+theoretical_var <- 1/lambda^2/n
+theoretical_var 
+sample_var
+
+```
+
+### 3. Show that the distribution is approximately normal.
+From the Central Limit Theorem, the distribution of averages is often normal, even if the distribution that the data is being sampled from is non-normal.
+
+```{r, echo=TRUE}
+par(mfrow = c(1,1))
+hist(means_exp,breaks=n,prob=T,xlab = "means",ylab="density")
+#curve(dnorm(x, 0, 1), -3, 3, col = 'blue',add=T) 
+#lines(density(scale(means_exp)), col = 'red')
+```
+
+## Part 2:  Basic Inferential Data Analysis
+
+### Loading and performing some exploratory data analysis
+```{r, echo=TRUE}
+
+head(ToothGrowth)
+dim(ToothGrowth)
+str(ToothGrowth)
+summary(ToothGrowth)
+unique(ToothGrowth$dose)
+```
+#### Plots
+```{r, echo = TRUE}
+g <- ggplot(ToothGrowth, aes(len, supp, color = dose)) + geom_point()
+print(g)
+```
+
+```{r, echo = TRUE}
+g <- ggplot(ToothGrowth, aes(factor(dose), len, color = supp)) + geom_boxplot() + facet_grid(.~dose)
+print(g)
+```
+
+
+### Using confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose
+
+#### Confidence interval
+``` {r, echo = TRUE}
+groupwiseMean(len ~ supp, data = ToothGrowth, conf = 0.95, digits = 3)
+groupwiseMean(len ~ factor(dose), data = ToothGrowth, conf = 0.95, digits = 3)
+groupwiseMean(len ~ factor(dose) + factor(supp), data = ToothGrowth, conf = 0.95, digits = 3)
+```
+#### T test 
+Tooth length corresponding to  OJ vs VC supplement. Null hypothesis being means of both are same and Alternate hypothesis being mean of  tooth growth corresponding to OJ is greater than that of VC supplements.
+```{r, echo = TRUE}
+OJ <- ToothGrowth$len[ToothGrowth$supp == 'OJ']
+VC = ToothGrowth$len[ToothGrowth$supp == 'VC']
+t.test(OJ, VC, alternative = "greater", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+```
+Tooth Growth by dose. Dose is divided into 3 groups, group1 = 0.5, group2 = 1.0, group3 = 2.0
+```{r, echo = TRUE}
+group1 <- ToothGrowth$len[ToothGrowth$dose == 0.5]
+group2 <- ToothGrowth$len[ToothGrowth$dose == 1.0]
+group3 <- ToothGrowth$len[ToothGrowth$dose == 2.0]
+
+t.test(group1, group2, alternative = "less", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+t.test(group2, group3, alternative = "less", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+
+```
+```{r, echo=TRUE}
+OJtwomg <- ToothGrowth$len[ToothGrowth$supp == 'OJ' & ToothGrowth$dose == 2.0]
+VCtwomg <- ToothGrowth$len[ToothGrowth$supp == 'VC' & ToothGrowth$dose == 2.0]
+
+t.test(OJtwomg, VCtwomg, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+```
+### Conclusions
+From the result of the T tests and confidence intervals, it can be concluded that:
+   
+    1.  The supplement OJ had more impact than supplement VC on tooth growth.
+    2.  Higher the dose more is the growth.
+    3.  The impact on tooth growth 2.0 mg dose with VC supplement vs 2.0 mg dose with OJ supplement can't be determined.

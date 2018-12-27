@@ -1,0 +1,500 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Statistical Inference},
+            pdfauthor={Kaveri Chatra},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Statistical Inference}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Kaveri Chatra}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+\maketitle
+
+\subsection{Part 1: Investigating exponetial distribution and comparing
+with Central Limit
+Theorem}\label{part-1-investigating-exponetial-distribution-and-comparing-with-central-limit-theorem}
+
+\subsubsection{Loading Libraries}\label{loading-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{"data.table"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"datasets"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"rcompanion"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{lambda <-}\StringTok{ }\FloatTok{0.2}
+\NormalTok{sim<-}\StringTok{ }\DecValTok{1000}
+\NormalTok{n <-}\StringTok{ }\DecValTok{40}
+
+
+\NormalTok{exp_sim <-}\StringTok{ }\KeywordTok{replicate}\NormalTok{(sim, }\KeywordTok{rexp}\NormalTok{(n, lambda))}
+\NormalTok{means_exp <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(exp_sim, }\DecValTok{2}\NormalTok{, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{1. Show where the distribution is centered at and compare
+it to the theoretical center of the
+distribution.}\label{show-where-the-distribution-is-centered-at-and-compare-it-to-the-theoretical-center-of-the-distribution.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample_mean <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(exp_sim)}
+\NormalTok{theoretical_mean <-}\DecValTok{1}\OperatorTok{/}\NormalTok{lambda}
+\KeywordTok{hist}\NormalTok{(means_exp, }\DataTypeTok{xlab =} \StringTok{"sample means"}\NormalTok{, }\DataTypeTok{main =} \StringTok{"Exponential Function"}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v =}\NormalTok{ theoretical_mean, }\DataTypeTok{col =} \StringTok{"orange"}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{4}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v =}\NormalTok{ sample_mean, }\DataTypeTok{col =} \StringTok{"black"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{statistical_inference_assignment_files/figure-latex/unnamed-chunk-3-1.pdf}
+From the graph it can be noticed that sample mean is very close to
+theoretical mean
+
+\subsubsection{2. Show how variable it is and compare it to the
+theoretical variance of the
+distribution..}\label{show-how-variable-it-is-and-compare-it-to-the-theoretical-variance-of-the-distribution..}
+
+Standard deviation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample_std <-}\StringTok{ }\KeywordTok{sd}\NormalTok{(means_exp)}
+\CommentTok{#For exp. distribution mean = std}
+\NormalTok{theoretical_std <-}\StringTok{ }\DecValTok{1}\OperatorTok{/}\NormalTok{lambda}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(n)}
+\NormalTok{theoretical_std}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7905694
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample_std}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7817394
+\end{verbatim}
+
+Variance
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample_var <-}\StringTok{ }\KeywordTok{var}\NormalTok{(means_exp)}
+\NormalTok{theoretical_var <-}\StringTok{ }\DecValTok{1}\OperatorTok{/}\NormalTok{lambda}\OperatorTok{^}\DecValTok{2}\OperatorTok{/}\NormalTok{n}
+\NormalTok{theoretical_var }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.625
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample_var}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6111165
+\end{verbatim}
+
+\subsubsection{3. Show that the distribution is approximately
+normal.}\label{show-that-the-distribution-is-approximately-normal.}
+
+From the Central Limit Theorem, the distribution of averages is often
+normal, even if the distribution that the data is being sampled from is
+non-normal.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{hist}\NormalTok{(means_exp,}\DataTypeTok{breaks=}\NormalTok{n,}\DataTypeTok{prob=}\NormalTok{T,}\DataTypeTok{xlab =} \StringTok{"means"}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{"density"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{statistical_inference_assignment_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#curve(dnorm(x, 0, 1), -3, 3, col = 'blue',add=T) }
+\CommentTok{#lines(density(scale(means_exp)), col = 'red')}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Part 2: Basic Inferential Data
+Analysis}\label{part-2-basic-inferential-data-analysis}
+
+\subsubsection{Loading and performing some exploratory data
+analysis}\label{loading-and-performing-some-exploratory-data-analysis}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(ToothGrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dim}\NormalTok{(ToothGrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 60  3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{str}\NormalTok{(ToothGrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(ToothGrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       len        supp         dose      
+##  Min.   : 4.20   OJ:30   Min.   :0.500  
+##  1st Qu.:13.07   VC:30   1st Qu.:0.500  
+##  Median :19.25           Median :1.000  
+##  Mean   :18.81           Mean   :1.167  
+##  3rd Qu.:25.27           3rd Qu.:2.000  
+##  Max.   :33.90           Max.   :2.000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unique}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{dose)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5 1.0 2.0
+\end{verbatim}
+
+\paragraph{Plots}\label{plots}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(ToothGrowth, }\KeywordTok{aes}\NormalTok{(len, supp, }\DataTypeTok{color =}\NormalTok{ dose)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{()}
+\KeywordTok{print}\NormalTok{(g)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{statistical_inference_assignment_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(ToothGrowth, }\KeywordTok{aes}\NormalTok{(}\KeywordTok{factor}\NormalTok{(dose), len, }\DataTypeTok{color =}\NormalTok{ supp)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_grid}\NormalTok{(.}\OperatorTok{~}\NormalTok{dose)}
+\KeywordTok{print}\NormalTok{(g)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{statistical_inference_assignment_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\subsubsection{Using confidence intervals and/or hypothesis tests to
+compare tooth growth by supp and
+dose}\label{using-confidence-intervals-andor-hypothesis-tests-to-compare-tooth-growth-by-supp-and-dose}
+
+\paragraph{Confidence interval}\label{confidence-interval}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{groupwiseMean}\NormalTok{(len }\OperatorTok{~}\StringTok{ }\NormalTok{supp, }\DataTypeTok{data =}\NormalTok{ ToothGrowth, }\DataTypeTok{conf =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   supp  n Mean Conf.level Trad.lower Trad.upper
+## 1   OJ 30 20.7       0.95       18.2       23.1
+## 2   VC 30 17.0       0.95       13.9       20.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{groupwiseMean}\NormalTok{(len }\OperatorTok{~}\StringTok{ }\KeywordTok{factor}\NormalTok{(dose), }\DataTypeTok{data =}\NormalTok{ ToothGrowth, }\DataTypeTok{conf =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   dose  n Mean Conf.level Trad.lower Trad.upper
+## 1  0.5 20 10.6       0.95        8.5       12.7
+## 2  1.0 20 19.7       0.95       17.7       21.8
+## 3  2.0 20 26.1       0.95       24.3       27.9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{groupwiseMean}\NormalTok{(len }\OperatorTok{~}\StringTok{ }\KeywordTok{factor}\NormalTok{(dose) }\OperatorTok{+}\StringTok{ }\KeywordTok{factor}\NormalTok{(supp), }\DataTypeTok{data =}\NormalTok{ ToothGrowth, }\DataTypeTok{conf =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{digits =} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   dose supp  n  Mean Conf.level Trad.lower Trad.upper
+## 1  0.5   OJ 10 13.20       0.95      10.00      16.40
+## 2  0.5   VC 10  7.98       0.95       6.02       9.94
+## 3  1.0   OJ 10 22.70       0.95      19.90      25.50
+## 4  1.0   VC 10 16.80       0.95      15.00      18.60
+## 5  2.0   OJ 10 26.10       0.95      24.20      28.00
+## 6  2.0   VC 10 26.10       0.95      22.70      29.60
+\end{verbatim}
+
+\paragraph{T test}\label{t-test}
+
+Tooth length corresponding to OJ vs VC supplement. Null hypothesis being
+means of both are same and Alternate hypothesis being mean of tooth
+growth corresponding to OJ is greater than that of VC supplements.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{OJ <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{supp }\OperatorTok{==}\StringTok{ 'OJ'}\NormalTok{]}
+\NormalTok{VC =}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{supp }\OperatorTok{==}\StringTok{ 'VC'}\NormalTok{]}
+\KeywordTok{t.test}\NormalTok{(OJ, VC, }\DataTypeTok{alternative =} \StringTok{"greater"}\NormalTok{, }\DataTypeTok{paired =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{var.equal =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  OJ and VC
+## t = 1.9153, df = 55.309, p-value = 0.03032
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.4682687       Inf
+## sample estimates:
+## mean of x mean of y 
+##  20.66333  16.96333
+\end{verbatim}
+
+Tooth Growth by dose. Dose is divided into 3 groups, group1 = 0.5,
+group2 = 1.0, group3 = 2.0
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{group1 <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{dose }\OperatorTok{==}\StringTok{ }\FloatTok{0.5}\NormalTok{]}
+\NormalTok{group2 <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{dose }\OperatorTok{==}\StringTok{ }\FloatTok{1.0}\NormalTok{]}
+\NormalTok{group3 <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{dose }\OperatorTok{==}\StringTok{ }\FloatTok{2.0}\NormalTok{]}
+
+\KeywordTok{t.test}\NormalTok{(group1, group2, }\DataTypeTok{alternative =} \StringTok{"less"}\NormalTok{, }\DataTypeTok{paired =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{var.equal =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  group1 and group2
+## t = -6.4766, df = 37.986, p-value = 6.342e-08
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##       -Inf -6.753323
+## sample estimates:
+## mean of x mean of y 
+##    10.605    19.735
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{t.test}\NormalTok{(group2, group3, }\DataTypeTok{alternative =} \StringTok{"less"}\NormalTok{, }\DataTypeTok{paired =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{var.equal =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  group2 and group3
+## t = -4.9005, df = 37.101, p-value = 9.532e-06
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##      -Inf -4.17387
+## sample estimates:
+## mean of x mean of y 
+##    19.735    26.100
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{OJtwomg <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{supp }\OperatorTok{==}\StringTok{ 'OJ'} \OperatorTok{&}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{dose }\OperatorTok{==}\StringTok{ }\FloatTok{2.0}\NormalTok{]}
+\NormalTok{VCtwomg <-}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{len[ToothGrowth}\OperatorTok{$}\NormalTok{supp }\OperatorTok{==}\StringTok{ 'VC'} \OperatorTok{&}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{dose }\OperatorTok{==}\StringTok{ }\FloatTok{2.0}\NormalTok{]}
+
+\KeywordTok{t.test}\NormalTok{(OJtwomg, VCtwomg, }\DataTypeTok{alternative =} \StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{paired =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{var.equal =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{conf.level =} \FloatTok{0.95}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  OJtwomg and VCtwomg
+## t = -0.046136, df = 14.04, p-value = 0.9639
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -3.79807  3.63807
+## sample estimates:
+## mean of x mean of y 
+##     26.06     26.14
+\end{verbatim}
+
+\subsubsection{Conclusions}\label{conclusions}
+
+From the result of the T tests and confidence intervals, it can be
+concluded that:
+
+\begin{verbatim}
+1.  The supplement OJ had more impact than supplement VC on tooth growth.
+2.  Higher the dose more is the growth.
+3.  The impact on tooth growth 2.0 mg dose with VC supplement vs 2.0 mg dose with OJ supplement can't be determined.
+\end{verbatim}
+
+
+\end{document}
